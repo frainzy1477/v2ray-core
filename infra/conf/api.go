@@ -6,7 +6,7 @@ import (
 	"v2ray.com/core/app/commander"
 	loggerservice "v2ray.com/core/app/log/command"
 	handlerservice "v2ray.com/core/app/proxyman/command"
-	ruleservice "v2ray.com/core/app/router/command"
+	ruleservice "v2ray.com/core/app/stats/command"
 	statsservice "v2ray.com/core/app/stats/command"
 	"v2ray.com/core/common/serial"
 )
