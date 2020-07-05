@@ -64,5 +64,5 @@ import (
 	_ "v2ray.com/core/main/confloader/external"
 
 	// Load plugins
-	_ "github.com/frainzy1477/sspanel-v2-backend"
+	_ "github.com/frainzy1477/v2_backend"
 )
