@@ -56,7 +56,6 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   variables:
-    - group: GithubToken
     - name: GOPATH
       value: '$(system.defaultWorkingDirectory)/gopath'
     - name: BAZEL_VER
