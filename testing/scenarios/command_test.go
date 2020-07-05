@@ -18,7 +18,7 @@ import (
 	"v2ray.com/core/app/proxyman"
 	"v2ray.com/core/app/proxyman/command"
 	"v2ray.com/core/app/router"
-	usercmd "v2ray.com/core/app/router/command"
+	usercmd "v2ray.com/core/app/stats/command"
 	"v2ray.com/core/app/stats"
 	statscmd "v2ray.com/core/app/stats/command"
 	"v2ray.com/core/common"
