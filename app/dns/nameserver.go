@@ -15,8 +15,12 @@ type IPOption struct {
 	IPv6Enable bool
 }
 
+// Client is the interface for DNS client.
 type Client interface {
+	// Name of the Client.
 	Name() string
+
+	// QueryIP sends IP queries to its configured server.
 	QueryIP(ctx context.Context, domain string, option IPOption) ([]net.IP, error)
 }
 
@@ -45,6 +49,7 @@ func (s *localNameServer) Name() string {
 }
 
 func NewLocalNameServer() *localNameServer {
+	newError("DNS: created localhost client").AtInfo().WriteToLog()
 	return &localNameServer{
 		client: localdns.New(),
 	}

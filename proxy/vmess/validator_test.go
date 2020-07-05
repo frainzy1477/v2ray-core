@@ -11,16 +11,16 @@ import (
 	. "v2ray.com/core/proxy/vmess"
 )
 
+func toAccount(a *Account) protocol.Account {
+	account, err := a.AsAccount()
+	common.Must(err)
+	return account
+}
+
 func TestUserValidator(t *testing.T) {
 	hasher := protocol.DefaultIDHash
 	v := NewTimedUserValidator(hasher)
 	defer common.Close(v)
-
-	toAccount := func(a *Account) protocol.Account {
-		account, err := a.AsAccount()
-		common.Must(err)
-		return account
-	}
 
 	id := uuid.New()
 	user := &protocol.MemoryUser{
@@ -39,7 +39,7 @@ func TestUserValidator(t *testing.T) {
 			common.Must2(serial.WriteUint64(idHash, uint64(ts)))
 			userHash := idHash.Sum(nil)
 
-			euser, ets, found := v.Get(userHash)
+			euser, ets, found, _ := v.Get(userHash)
 			if !found {
 				t.Fatal("user not found")
 			}
@@ -67,7 +67,7 @@ func TestUserValidator(t *testing.T) {
 			common.Must2(serial.WriteUint64(idHash, uint64(ts)))
 			userHash := idHash.Sum(nil)
 
-			euser, _, found := v.Get(userHash)
+			euser, _, found, _ := v.Get(userHash)
 			if found || euser != nil {
 				t.Error("unexpected user")
 			}
@@ -86,5 +86,25 @@ func TestUserValidator(t *testing.T) {
 	}
 	if v := v.Remove(user.Email); v {
 		t.Error("remove user twice")
+	}
+}
+
+func BenchmarkUserValidator(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		hasher := protocol.DefaultIDHash
+		v := NewTimedUserValidator(hasher)
+
+		for j := 0; j < 1500; j++ {
+			id := uuid.New()
+			v.Add(&protocol.MemoryUser{
+				Email: "test",
+				Account: toAccount(&Account{
+					Id:      id.String(),
+					AlterId: 16,
+				}),
+			})
+		}
+
+		common.Close(v)
 	}
 }
